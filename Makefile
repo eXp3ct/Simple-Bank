@@ -10,7 +10,7 @@ createdb:
 dropdb:
 	docker exec -it go-lang-postgres dropdb simple_bank
 
-migrateup:
+migrateup: createdb
 	migrate -path db/migration -database "postgresql://root:root@localhost:10101/simple_bank?sslmode=disable" --verbose up
 
 migratedown:
@@ -20,6 +20,7 @@ sqlc:
 	docker run --rm -v "D:/Projects/Go Projects/Simple Bank:/src" -w /src sqlc/sqlc generate
 
 test:
+	go clean -testcache
 	go test -v -cover ./...
 
 .PHONY: postgres createdb dropdb migrateup migratedown sqlc test
